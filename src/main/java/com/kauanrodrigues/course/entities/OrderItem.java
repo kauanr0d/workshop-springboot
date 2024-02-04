@@ -3,6 +3,7 @@ package com.kauanrodrigues.course.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kauanrodrigues.course.entities.pk.OrderItemPK;
 
 import jakarta.persistence.EmbeddedId;
@@ -11,10 +12,10 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table (name = "tb_order_item")
-public class OrdemItem implements Serializable {
+public class OrderItem implements Serializable {
 
 	@EmbeddedId
-	private OrderItemPK id;
+	private OrderItemPK id = new OrderItemPK();
 
 	private Integer quantity;
 
@@ -24,7 +25,7 @@ public class OrdemItem implements Serializable {
 		return 0.0;
 	}
 
-	public OrdemItem(Order order, Product product, Integer quantity, Double price) {
+	public OrderItem(Order order, Product product, Integer quantity, Double price) {
 		super();
 		this.id.setOrder(order);
 		this.id.setProduct(product);
@@ -32,6 +33,7 @@ public class OrdemItem implements Serializable {
 		this.price = price;
 	}
 
+	@JsonIgnore
 	public Order getOrder() {
 		return this.id.getOrder();
 	}
@@ -61,12 +63,29 @@ public class OrdemItem implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		OrdemItem other = (OrdemItem) obj;
+		OrderItem other = (OrderItem) obj;
 		return Objects.equals(id, other.id);
 	}
 
-	public OrdemItem() {
+	public OrderItem() {
 		super();
 	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+ 
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+	
 
 }
