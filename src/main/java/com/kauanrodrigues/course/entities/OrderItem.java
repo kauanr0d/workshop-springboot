@@ -11,7 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table (name = "tb_order_item")
+@Table(name = "tb_order_item")
 public class OrderItem implements Serializable {
 
 	@EmbeddedId
@@ -50,6 +50,10 @@ public class OrderItem implements Serializable {
 		this.id.setProduct(product);
 	}
 
+	public Double getSubTotal() {
+		return this.getPrice() * this.quantity;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -78,7 +82,7 @@ public class OrderItem implements Serializable {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
- 
+
 	public Double getPrice() {
 		return price;
 	}
@@ -86,6 +90,5 @@ public class OrderItem implements Serializable {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	 
 
 }
