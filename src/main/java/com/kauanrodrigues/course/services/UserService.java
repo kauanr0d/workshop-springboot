@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kauanrodrigues.course.entities.User;
 import com.kauanrodrigues.course.repositories.UserRepository;
+import com.kauanrodrigues.course.services.exceptions.ResourceNotFoundException;
 
 
 @Service
@@ -23,7 +24,8 @@ public class UserService {
 	}
 	
 	public User findById(Long id) {
-		return repository.findById(id).get();
+		Optional<User> user = repository.findById(id);
+		return user.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User user) {
@@ -39,7 +41,7 @@ public class UserService {
 		
 		updateData(entity,user);
 		return repository.save(entity);
-	}
+	} 
 
 	private void updateData(User entity, User user) {
 		entity.setName(user.getName());
