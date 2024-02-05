@@ -3,6 +3,8 @@ package com.kauanrodrigues.course.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,6 +15,8 @@ import com.kauanrodrigues.course.entities.User;
 import com.kauanrodrigues.course.repositories.UserRepository;
 import com.kauanrodrigues.course.services.exceptions.DatabaseException;
 import com.kauanrodrigues.course.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {
@@ -43,12 +47,18 @@ public class UserService {
 			throw new DatabaseException(e.getMessage());
 		}
 	}
-
+ 
 	public User update(Long id, User user) {
+		
+		try {
 		User entity = repository.getReferenceById(id);// objeto monitorado pelo JPA
 
 		updateData(entity, user);
 		return repository.save(entity);
+		
+		}catch(EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User entity, User user) {
