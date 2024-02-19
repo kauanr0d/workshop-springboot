@@ -15,14 +15,14 @@ import com.kauanrodrigues.course.repositories.CategoryRepository;
 public class CategoryService {
 	
 	@Autowired
-	private CategoryRepository repository;
+	private CategoryRepository categoryRepository;
 	
 	public List<Category> findAll(){
-		return repository.findAll();
+		return categoryRepository.findAll();
 	}
 	
 	public Category findById(Long id) {
-		return repository.findById(id).get();
+		return categoryRepository.findById(id).get();
 	}
 	
 }
